@@ -1,6 +1,7 @@
 from aiogram import Router, types
 from aiogram.fsm.context import FSMContext
 
+from keyboards import cancel
 from states import UserForm
 
 router = Router()
@@ -11,7 +12,8 @@ async def on_name(message: types.Message, state: FSMContext) -> None:
     # {'name': message.text, 'surname': message.text}
     await state.update_data(name=message.text)
     await message.answer(
-        text="Familiyangizni kiriting"
+        text="Familiyangizni kiriting",
+        reply_markup=cancel()
     )
     await state.set_state(UserForm.surname)
 
@@ -20,7 +22,8 @@ async def on_name(message: types.Message, state: FSMContext) -> None:
 async def on_surname(message: types.Message, state: FSMContext) -> None:
     await state.update_data(surname=message.text)
     await message.answer(
-        text="Iltimos yoshingizni kiriting"
+        text="Iltimos yoshingizni kiriting",
+        reply_markup=cancel()
     )
     await state.set_state(UserForm.age)
 
@@ -35,4 +38,3 @@ async def on_age(message: types.Message, state: FSMContext) -> None:
              f"Yoshingiz: {data.get('age')}"
     )
     await state.clear()
-    
